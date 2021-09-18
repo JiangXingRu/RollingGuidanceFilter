@@ -1,9 +1,7 @@
-
-
 #include "RollingGuidanceFilter.h"
 
-int main(){
-
+int main(int argc, char *argv[])
+{
 	String name = "./imgs/image.png";
 
 	Mat img = imread(name);
@@ -16,7 +14,8 @@ int main(){
 
 	clock_t startTime = clock();
 	Mat res = RollingGuidanceFilter::filter(img,3,25.5,4);
-	printf("Elapsed Time: %d ms\n",clock()-startTime);
+	clock_t endTime = clock();
+	printf("Elapsed Time: %d ms\n", endTime - startTime);
 
 	imshow("img",img);
 	imshow("res",res);
