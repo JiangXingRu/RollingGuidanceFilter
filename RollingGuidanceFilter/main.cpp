@@ -2,9 +2,9 @@
 
 int main(int argc, char *argv[])
 {
-	String name = "./imgs/image.png";
+	string name = "./imgs/image.png";
 
-	Mat img = imread(name);
+	cv::Mat img = cv::imread(name);
 
 	if(img.empty()){
 		printf("No such file.\n");
@@ -13,14 +13,14 @@ int main(int argc, char *argv[])
 	}
 
 	clock_t startTime = clock();
-	Mat res = RollingGuidanceFilter::filter(img,3,25.5,4);
+	cv::Mat res = RollingGuidanceFilter::filter(img,3,25.5,4);
 	clock_t endTime = clock();
 	printf("Elapsed Time: %d ms\n", endTime - startTime);
 
-	imshow("img",img);
-	imshow("res",res);
-	imwrite("./imgs/res.png", res);
-	waitKey();
+	cv::imshow("img",img);
+	cv::imshow("res",res);
+	cv::imwrite("./imgs/res.png", res);
+	cv::waitKey();
 
 	return 0;
 }

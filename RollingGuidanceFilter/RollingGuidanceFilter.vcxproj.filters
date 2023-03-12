@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\permutohedral">
+      <UniqueIdentifier>{3c862c43-e977-455a-a617-795bd4a5b48b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -22,6 +25,15 @@
   <ItemGroup>
     <ClInclude Include="RollingGuidanceFilter.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="permutohedral\Image.h">
+      <Filter>头文件\permutohedral</Filter>
+    </ClInclude>
+    <ClInclude Include="permutohedral\macros.h">
+      <Filter>头文件\permutohedral</Filter>
+    </ClInclude>
+    <ClInclude Include="permutohedral\permutohedral.h">
+      <Filter>头文件\permutohedral</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

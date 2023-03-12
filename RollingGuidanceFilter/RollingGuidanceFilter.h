@@ -16,38 +16,23 @@
 
 #ifndef RGF_H
 #define RGF_H
-
-/***************************************************************/
-/* 
- * Standard IO library is required.
- * STL String library is required.
- *
-/***************************************************************/
-
 #include <cstdio>
 #include <string>
-
-/***************************************************************/
-/* 
- * OpenCV 2.4 is required. 
- * The following code is already tested on OpenCV 2.4.2.
- *
-/***************************************************************/
+#include <time.h>
 
 #include <opencv2\core\core.hpp>
 #include <opencv2\highgui\highgui.hpp>
 #include <opencv2\imgproc\imgproc.hpp>
+
 #include "permutohedral\macros.h"
 #include "permutohedral\Image.h"
 #include "permutohedral\permutohedral.h"
-#include <time.h>
 
 //Use the namespace of CV and STD
 using namespace std;
-using namespace cv;
 
-class RollingGuidanceFilter{
-
+class RollingGuidanceFilter
+{
 public:
 
 	/***************************************************************/
@@ -64,19 +49,26 @@ public:
 	 */
 	/***************************************************************/
 
-	static Mat filter(Mat img, float sigma_s=3.0f, float sigma_r=0.1, int iteration=4){
-		
-		Mat I;
+	static cv::Mat filter(cv::Mat img, float sigma_s=3.0f, float sigma_r=0.1, int iteration=4)
+	{	
+		cv::Mat I;
 		
 		//Change type to float
 		img.convertTo(I,CV_MAKETYPE(CV_32F,img.channels()));
 
-		Mat res = I.clone();
+		cv::Mat res = I.clone();
 
 		// Filtering
-		for(int i=0;i<iteration;i++){
-			if(i)res = bilateralPermutohedral(I,res,sigma_s,sigma_r);
-			else GaussianBlur(I,res,Size(0,0),sigma_s,sigma_s);
+		for(int i=0;i<iteration;i++)
+		{
+			if (i)
+			{
+				res = bilateralPermutohedral(I, res, sigma_s, sigma_r);
+			}
+			else
+			{
+				GaussianBlur(I, res, cv::Size(0, 0), sigma_s, sigma_s);
+			}
 		}
 
 		// Change type back
@@ -99,7 +91,8 @@ public:
 	 */
 	/***************************************************************/
 
-	static Mat bilateralPermutohedral(Mat img, Mat edge, float sigma_s, float sigma_r){ // img: float [0,1]
+	static cv::Mat bilateralPermutohedral(cv::Mat img, cv::Mat edge, float sigma_s, float sigma_r)
+	{ // img: float [0,1]
 
 		float invSpatialStdev = 1.0f/sigma_s;
 		float invColorStdev = 1.0f/sigma_r;
@@ -113,19 +106,25 @@ public:
 		Image positions(1, width, height, 2+eCh);
 		Image input(1, width, height, iCh);
 
-		//From Mat to Image
-		for (int y = 0; y < height; y++) {
+		//From cv::Mat to Image
+		for (int y = 0; y < height; y++)
+		{
 			float *pimg = img.ptr<float>(y);
 			float *pedge = edge.ptr<float>(y);
-			for (int x = 0; x < width; x++) {
+			for (int x = 0; x < width; x++) 
+			{
 				positions(x, y)[0] = invSpatialStdev * x;
 				positions(x, y)[1] = invSpatialStdev * y;
 
-				for(int c=0; c<eCh; c++)
-					positions(x, y)[2+c] = invColorStdev * pedge[x*eCh+c];
+				for (int c = 0; c < eCh; c++)
+				{
+					positions(x, y)[2 + c] = invColorStdev * pedge[x*eCh + c];
+				}
 
-				for(int c=0; c<iCh; c++)
-					input(x, y)[c] = pimg[x*iCh+c];
+				for (int c = 0; c < iCh; c++)
+				{
+					input(x, y)[c] = pimg[x*iCh + c];
+				}
 			}
 		}
 
@@ -133,15 +132,18 @@ public:
 		Image out = PermutohedralLattice::filter(input, positions);
 
 		// Save the result
-		Mat imgOut(img.size(), img.type());
-		for (int y = 0; y < height; y++) {
+		cv::Mat imgOut(img.size(), img.type());
+		for (int y = 0; y < height; y++) 
+		{
 			float *pimgOut = imgOut.ptr<float>(y);
-			for (int x = 0; x < width; x++) {
-				for(int c=0; c<iCh; c++)
-					pimgOut[x*iCh+c] = out(x, y)[c];
+			for (int x = 0; x < width; x++)
+			{
+				for (int c = 0; c < iCh; c++)
+				{
+					pimgOut[x*iCh + c] = out(x, y)[c];
+				}
 			}
 		}
-
 		return imgOut;
 	} 
 };
